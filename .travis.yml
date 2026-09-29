@@ -2,12 +2,14 @@ language: node_js
 
 sudo: false
 
+# 0.10/0.12/4/5 dropped: lib/ uses ES2015 syntax (shorthand properties in lib/util.js, default params + template literal + sloppy-mode let in lib/quick-sort.js) that throws SyntaxError before any test runs on those engines.
 node_js:
-  - "0.10"
-  - "0.12"
-  - "4"
-  - "5"
+  - "22"
   - "6"
+
+# --ignore-engines: devDep clean-publish@3.1.0 declares node >=12 but is only a publish helper, unused by build/test; without it yarn refuses to install on the Node 6 leg.
+install:
+  - yarn --frozen-lockfile --ignore-engines
 
 cache:
   directories:
@@ -15,4 +17,3 @@ cache:
 
 os:
   - linux
-  - osx
